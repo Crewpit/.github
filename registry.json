@@ -1,0 +1,18 @@
+{
+  "cmSchema": 1,
+  "updated": "2026-10-06",
+  "apps": [
+    { "name": "Cockpit App 1", "description": "Test entry 1 for the Crewmate gallery.", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-app1" },
+    { "name": "Cockpit App 2", "description": "Test entry 2 for the Crewmate gallery.", "version": "0.4.2", "href": "https://github.com/Crewpit/cockpit-app2" },
+    { "name": "Cockpit App 3", "description": "Test entry 3 for the Crewmate gallery.", "version": "2.1.0", "href": "https://github.com/Crewpit/cockpit-app3" },
+    { "name": "Cockpit App 3", "description": "Test entry 3 for the Crewmate gallery.", "version": "2.1.1", "href": "https://github.com/Crewpit/cockpit-app3" },
+    { "name": "Cockpit App 3", "description": "Test entry 3 for the Crewmate gallery.", "version": "2.2.0", "href": "https://github.com/Crewpit/cockpit-app3" },
+    { "name": "Cockpit App 4", "description": "Test entry 4 for the Crewmate gallery.", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-app4" },
+    { "name": "Cockpit App 5", "description": "Test entry 5 for the Crewmate gallery.", "version": "0.9.0", "href": "https://github.com/Crewpit/cockpit-app5" },
+    { "name": "Cockpit App 5", "description": "Test entry 5 for the Crewmate gallery.", "version": "1.0.0-rc1", "href": "https://github.com/Crewpit/cockpit-app5" },
+    { "name": "Cockpit App 6", "description": "Test entry 6 for the Crewmate gallery.", "version": "3.0.0", "href": "https://github.com/Crewpit/cockpit-app6" },
+    { "name": "Cockpit App 7", "description": "Test entry 7 for the Crewmate gallery.", "version": "1.2.0", "href": "https://github.com/Crewpit/cockpit-app7" },
+    { "name": "Cockpit App 8", "description": "Test entry 8 for the Crewmate gallery.", "version": "0.1.0", "href": "https://github.com/Crewpit/cockpit-app8" },
+    { "name": "Cockpit App 9", "description": "Test entry 9 for the Crewmate gallery.", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-app9" }
+  ]
+}
