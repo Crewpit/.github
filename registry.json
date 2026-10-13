@@ -3,6 +3,6 @@
   "updated": "2026-10-09",
   "apps": [
     { "name": "Crewdriver", "description": "Framework+Demo you can edit and develop your own Cockpit App", "version": "1.0.0", "href": "https://github.com/Crewpit/crewdriver" },
-    { "name": "Cockpit App 5", "description": "Test entry 5 for the Crewmate gallery.", "version": "0.9.0", "href": "https://github.com/Crewpit/cockpit-app5" }
+    { "name": "NetDebug", "description": "A suite of network tools to debug connectivity (ping, traceroute, etc.)", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-netdebug" }
   ]
 }
