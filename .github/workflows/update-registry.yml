@@ -2,7 +2,7 @@ name: Update registry
 
 on:
   schedule:
-    - cron: "17 5 * * *"
+    - cron: "20 1 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
