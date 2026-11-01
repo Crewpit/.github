@@ -1,8 +1,12 @@
 {
   "cmSchema": 1,
-  "updated": "2026-10-09",
+  "updated": "2026-11-01",
   "apps": [
-    { "name": "Crewdriver", "description": "Framework+Demo you can edit and develop your own Cockpit App", "version": "1.0.0", "href": "https://github.com/Crewpit/crewdriver" },
-    { "name": "NetDebug", "description": "A suite of network tools to debug connectivity (ping, traceroute, etc.)", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-netdebug" }
+    { "name": "Crewdriver", "description": "The \"S\" is silent.", "version": "1.0.0", "href": "https://github.com/Crewpit/crewdriver" },
+    { "name": "NetDebug", "description": "A suite of network tools to debug connectivity (ping, traceroute, etc.)", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-netdebug" },
+    { "name": "Pages", "description": "A dashboard-type extension for Cockpit that lets you load 3rd party webapps in the same UI", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-pages" },
+    { "name": "Sidebar Editor", "description": "A sidebar manager for Cockpit items", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-sidebar" },
+    { "name": "SMART Health", "description": "An implementation of smartmontools in the Cockpit UI", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-smartctl" },
+    { "name": "USB/IP", "description": "Client/server USBIP manager for Cockpit", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-usbip" }
   ]
 }
