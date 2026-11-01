@@ -1,0 +1,55 @@
+name: Update registry
+
+on:
+  schedule:
+    - cron: "17 5 * * *"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run: show the diff, do not commit"
+        type: boolean
+        default: true
+
+concurrency:
+  group: update-registry
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      # manual runs follow the checkbox, scheduled ones stay dry until
+      # the repo variable REGISTRY_LIVE is set to "true"
+      DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || (github.event_name != 'workflow_dispatch' && vars.REGISTRY_LIVE != 'true') }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node scripts/sync-registry.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Show diff
+        run: |
+          {
+            echo "### registry.json changes (dry run: $DRY_RUN)"
+            echo '```diff'
+            git diff -- registry.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+          git diff -- registry.json
+      - name: Commit registry changes
+        if: env.DRY_RUN != 'true'
+        run: |
+          if git diff --quiet -- registry.json; then
+            echo "No changes"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add registry.json
+          git commit -m "chore: sync registry.json with Crewpit cockpit-* repos"
+          git push

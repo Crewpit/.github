@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+// Rebuilds registry.json from the Crewpit repos.
+// Picks public cockpit-* repos (plus whatever is in config.include) that have a
+// preflight.json with a version and more than minFiles files. Anything smaller
+// is probably still WIP, so we skip it.
+// name <- override, else manifest label, else repo name
+// version <- preflight.json
+// description <- override, else the GitHub repo description, else what we had
+import { readFile, writeFile } from "node:fs/promises";
+
+const config = JSON.parse(await readFile(new URL("../registry-sync.config.json", import.meta.url), "utf8"));
+const registryPath = new URL("../registry.json", import.meta.url);
+const token = process.env.GITHUB_TOKEN;
+const headers = { Accept: "application/vnd.github+json", "User-Agent": "crewpit-registry-sync", ...(token && { Authorization: `Bearer ${token}` }) };
+
+async function getJson(url, { optional = false } = {}) {
+  const res = await fetch(url, { headers });
+  if (res.status === 404 && optional) return null;
+  if (!res.ok) throw new Error(`${url} -> ${res.status}`);
+  return res.json();
+}
+
+async function listRepos() {
+  const all = [];
+  for (let page = 1; ; page++) {
+    const batch = await getJson(`https://api.github.com/orgs/${config.org}/repos?type=public&per_page=100&page=${page}`);
+    all.push(...batch);
+    if (batch.length < 100) return all;
+  }
+}
+
+const existing = JSON.parse(await readFile(registryPath, "utf8"));
+const prev = new Map(existing.apps.map((a) => [a.href, a]));
+
+const repos = (await listRepos()).filter(
+  (r) => !r.private && !r.archived && !r.fork && !config.exclude.includes(r.name) &&
+    (r.name.startsWith(config.prefix) || config.include.includes(r.name)),
+);
+
+const found = [];
+for (const r of repos) {
+  const raw = (f) => `https://raw.githubusercontent.com/${config.org}/${r.name}/${r.default_branch}/${f}`;
+  const get = async (f) => { const res = await fetch(raw(f)); return res.ok ? res.json() : null; };
+  const preflight = await get("preflight.json");
+  if (!preflight?.version) { console.log(`skip ${r.name}: no preflight.json version (WIP)`); continue; }
+  const tree = await getJson(`https://api.github.com/repos/${config.org}/${r.name}/git/trees/${r.default_branch}?recursive=1`, { optional: true });
+  const files = tree?.tree?.filter((t) => t.type === "blob").length ?? 0;
+  if (files <= config.minFiles) { console.log(`skip ${r.name}: only ${files} files (WIP)`); continue; }
+  const manifest = await get("manifest.json");
+  const o = config.overrides[r.name] ?? {};
+  const old = prev.get(r.html_url);
+  found.push({
+    name: o.name ?? manifest?.tools?.index?.label ?? r.name,
+    description: o.description ?? r.description ?? old?.description ?? "",
+    version: preflight.version,
+    href: r.html_url,
+  });
+}
+
+// existing apps keep their spot, new ones go at the end A-Z
+const order = new Map(existing.apps.map((a, i) => [a.href, i]));
+found.sort((a, b) => (order.get(a.href) ?? 1e9) - (order.get(b.href) ?? 1e9) || a.name.localeCompare(b.name));
+
+const same = JSON.stringify(found) === JSON.stringify(existing.apps);
+if (same) { console.log("registry unchanged"); process.exit(0); }
+
+const out = { ...existing, updated: new Date().toISOString().slice(0, 10), apps: found };
+const line = (a) => "    " + JSON.stringify(a).replace(/^\{/, "{ ").replace(/\}$/, " }").replace(/":/g, '": ').replace(/,"/g, ', "');
+const text = `{\n  "cmSchema": ${out.cmSchema},\n  "updated": "${out.updated}",\n  "apps": [\n${found.map(line).join(",\n")}\n  ]\n}\n`;
+await writeFile(registryPath, text);
+console.log(`registry updated: ${found.length} apps`);
