@@ -61,11 +61,13 @@ for (const r of repos) {
 const order = new Map(existing.apps.map((a, i) => [a.href, i]));
 found.sort((a, b) => (order.get(a.href) ?? 1e9) - (order.get(b.href) ?? 1e9) || a.name.localeCompare(b.name));
 
-const same = JSON.stringify(found) === JSON.stringify(existing.apps);
+// a missing updatedAt counts as a change so the first run adds the field
+const same = JSON.stringify(found) === JSON.stringify(existing.apps) && existing.updatedAt;
 if (same) { console.log("registry unchanged"); process.exit(0); }
 
-const out = { ...existing, updated: new Date().toISOString().slice(0, 10), apps: found };
+// updatedAt = unix seconds of the run that last changed the list (handy for Crewmate and for debugging)
+const out = { ...existing, updated: new Date().toISOString().slice(0, 10), updatedAt: Math.floor(Date.now() / 1000), apps: found };
 const line = (a) => "    " + JSON.stringify(a).replace(/^\{/, "{ ").replace(/\}$/, " }").replace(/":/g, '": ').replace(/,"/g, ', "');
-const text = `{\n  "cmSchema": ${out.cmSchema},\n  "updated": "${out.updated}",\n  "apps": [\n${found.map(line).join(",\n")}\n  ]\n}\n`;
+const text = `{\n  "cmSchema": ${out.cmSchema},\n  "updated": "${out.updated}",\n  "updatedAt": ${out.updatedAt},\n  "apps": [\n${found.map(line).join(",\n")}\n  ]\n}\n`;
 await writeFile(registryPath, text);
 console.log(`registry updated: ${found.length} apps`);

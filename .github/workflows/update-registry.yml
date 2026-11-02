@@ -2,7 +2,8 @@ name: Update registry
 
 on:
   schedule:
-    - cron: "20 1 * * *"
+    # cron is always UTC: 23:20 UTC = 01:20 in Romania in winter (02:20 in summer)
+    - cron: "20 23 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
@@ -19,16 +20,16 @@ permissions:
 
 jobs:
   sync:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     env:
       # manual runs follow the checkbox, scheduled ones stay dry until
       # the repo variable REGISTRY_LIVE is set to "true"
       DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || (github.event_name != 'workflow_dispatch' && vars.REGISTRY_LIVE != 'true') }}
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
         with:
-          node-version: 22
+          node-version: 24
       - run: node scripts/sync-registry.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
