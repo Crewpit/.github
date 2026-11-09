@@ -1,7 +1,7 @@
 {
   "org": "Crewpit",
   "prefix": "cockpit-",
-  "include": ["crewdriver"],
+  "include": ["crewdriver", "crewmate"],
   "minFiles": 5,
   "exclude": [],
   "overrides": {
