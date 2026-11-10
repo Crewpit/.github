@@ -3,6 +3,7 @@
 // Picks public cockpit-* repos (plus whatever is in config.include) that have a
 // preflight.json with a version and more than minFiles files. Anything smaller
 // is probably still WIP, so we skip it.
+// order: config.pinned first, then the rest A-Z
 // name <- override, else manifest label, else repo name
 // version <- preflight.json
 // description <- override, else the GitHub repo description, else what we had
@@ -50,6 +51,7 @@ for (const r of repos) {
   const o = config.overrides[r.name] ?? {};
   const old = prev.get(r.html_url);
   found.push({
+    repo: r.name,
     name: o.name ?? manifest?.tools?.index?.label ?? r.name,
     description: o.description ?? r.description ?? old?.description ?? "",
     version: preflight.version,
@@ -57,17 +59,18 @@ for (const r of repos) {
   });
 }
 
-// existing apps keep their spot, new ones go at the end A-Z
-const order = new Map(existing.apps.map((a, i) => [a.href, i]));
-found.sort((a, b) => (order.get(a.href) ?? 1e9) - (order.get(b.href) ?? 1e9) || a.name.localeCompare(b.name));
+// order: config.pinned first (in that order), then everything else A-Z by name
+const rank = (repo) => { const i = config.pinned.indexOf(repo); return i === -1 ? config.pinned.length : i; };
+found.sort((a, b) => rank(a.repo) - rank(b.repo) || a.name.localeCompare(b.name, "en", { sensitivity: "base" }));
+const apps = found.map(({ repo, ...app }) => app);
 
 // a missing updatedAt counts as a change so the first run adds the field
-const same = JSON.stringify(found) === JSON.stringify(existing.apps) && existing.updatedAt;
+const same = JSON.stringify(apps) === JSON.stringify(existing.apps) && existing.updatedAt;
 if (same) { console.log("registry unchanged"); process.exit(0); }
 
 // updatedAt = unix seconds of the run that last changed the list (handy for Crewmate and for debugging)
-const out = { ...existing, updated: new Date().toISOString().slice(0, 10), updatedAt: Math.floor(Date.now() / 1000), apps: found };
+const out = { ...existing, updated: new Date().toISOString().slice(0, 10), updatedAt: Math.floor(Date.now() / 1000), apps };
 const line = (a) => "    " + JSON.stringify(a).replace(/^\{/, "{ ").replace(/\}$/, " }").replace(/":/g, '": ').replace(/,"/g, ', "');
-const text = `{\n  "cmSchema": ${out.cmSchema},\n  "updated": "${out.updated}",\n  "updatedAt": ${out.updatedAt},\n  "apps": [\n${found.map(line).join(",\n")}\n  ]\n}\n`;
+const text = `{\n  "cmSchema": ${out.cmSchema},\n  "updated": "${out.updated}",\n  "updatedAt": ${out.updatedAt},\n  "apps": [\n${apps.map(line).join(",\n")}\n  ]\n}\n`;
 await writeFile(registryPath, text);
-console.log(`registry updated: ${found.length} apps`);
+console.log(`registry updated: ${apps.length} apps`);
