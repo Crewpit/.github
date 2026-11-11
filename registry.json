@@ -1,15 +1,15 @@
 {
   "cmSchema": 1,
-  "updated": "2026-11-10",
-  "updatedAt": 1794320184,
+  "updated": "2026-11-11",
+  "updatedAt": 1794365277,
   "apps": [
+    { "name": "Crewmate", "description": "Recommended package manager for Crewpit apps", "version": "1.0.1", "href": "https://github.com/Crewpit/crewmate" },
     { "name": "Crewdriver", "description": "The \"S\" is silent.", "version": "1.0.0", "href": "https://github.com/Crewpit/crewdriver" },
+    { "name": "Command Response", "description": "Cockpit app for reusable commands and commands that require history tracking.", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-command-response" },
     { "name": "NetDebug", "description": "A suite of network tools to debug connectivity (ping, traceroute, etc.)", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-netdebug" },
     { "name": "Pages", "description": "A dashboard-type extension for Cockpit that lets you load 3rd party webapps in the same UI", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-pages" },
     { "name": "Sidebar Editor", "description": "A sidebar manager for Cockpit items", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-sidebar" },
     { "name": "SMART Health", "description": "An implementation of smartmontools in the Cockpit UI", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-smartctl" },
-    { "name": "USB/IP", "description": "Client/server USBIP manager for Cockpit", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-usbip" },
-    { "name": "Command Response", "description": "Cockpit app for reusable commands and commands that require history tracking.", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-command-response" },
-    { "name": "Crewmate", "description": "Recommended package manager for Crewpit apps", "version": "1.0.1", "href": "https://github.com/Crewpit/crewmate" }
+    { "name": "USB/IP", "description": "Client/server USBIP manager for Cockpit", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-usbip" }
   ]
 }
