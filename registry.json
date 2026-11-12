@@ -1,10 +1,10 @@
 {
   "cmSchema": 1,
-  "updated": "2026-11-11",
-  "updatedAt": 1794365277,
+  "updated": "2026-11-12",
+  "updatedAt": 1794455312,
   "apps": [
     { "name": "Crewmate", "description": "Recommended package manager for Crewpit apps", "version": "1.0.1", "href": "https://github.com/Crewpit/crewmate" },
-    { "name": "Crewdriver", "description": "The \"S\" is silent.", "version": "1.0.0", "href": "https://github.com/Crewpit/crewdriver" },
+    { "name": "Crewdriver", "description": "The 'S' is silent.", "version": "1.0.0", "href": "https://github.com/Crewpit/crewdriver" },
     { "name": "Command Response", "description": "Cockpit app for reusable commands and commands that require history tracking.", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-command-response" },
     { "name": "NetDebug", "description": "A suite of network tools to debug connectivity (ping, traceroute, etc.)", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-netdebug" },
     { "name": "Pages", "description": "A dashboard-type extension for Cockpit that lets you load 3rd party webapps in the same UI", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-pages" },
