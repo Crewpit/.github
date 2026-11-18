@@ -1,7 +1,7 @@
 {
   "cmSchema": 1,
-  "updated": "2026-11-12",
-  "updatedAt": 1794455312,
+  "updated": "2026-11-18",
+  "updatedAt": 1794975713,
   "apps": [
     { "name": "Crewmate", "description": "Recommended package manager for Crewpit apps", "version": "1.0.1", "href": "https://github.com/Crewpit/crewmate" },
     { "name": "Crewdriver", "description": "The 'S' is silent.", "version": "1.0.0", "href": "https://github.com/Crewpit/crewdriver" },
@@ -10,6 +10,7 @@
     { "name": "Pages", "description": "A dashboard-type extension for Cockpit that lets you load 3rd party webapps in the same UI", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-pages" },
     { "name": "Sidebar Editor", "description": "A sidebar manager for Cockpit items", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-sidebar" },
     { "name": "SMART Health", "description": "An implementation of smartmontools in the Cockpit UI", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-smartctl" },
+    { "name": "Tuning", "description": "A cockpit app for system tuning (sysctl, zram, etc.)", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-tuning" },
     { "name": "USB/IP", "description": "Client/server USBIP manager for Cockpit", "version": "1.0.0", "href": "https://github.com/Crewpit/cockpit-usbip" }
   ]
 }
